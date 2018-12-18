@@ -15,7 +15,7 @@
 
 
 #define DEFAULT_INIT_DELAY 2000
-#define DEFAULT_INTER_DELAY 10
+#define DEFAULT_INTER_DELAY 100
 
 using namespace std;
 
