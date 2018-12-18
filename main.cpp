@@ -259,23 +259,30 @@ void _SendKey(char k) {
 
 }
 
-void _SendKeys(const char *string, unsigned int firstDelayMs = DEFAULT_INIT_DELAY, unsigned int interDelayMs = DEFAULT_INTER_DELAY) {
+void _SendKeys(const char *string, unsigned int firstDelayMs = DEFAULT_INIT_DELAY, unsigned int interDelayMs = DEFAULT_INTER_DELAY, unsigned int nlDelayMs = 0) {
 	Sleep(firstDelayMs);
 	int i=0;
 	while ((string[i] != '\0') && (i<strlen(string)))   {  
 		//std::cout << c;
+		if(string[i] == '\n') {
+			Sleep(nlDelayMs);
+		}
 		_SendKey(string[i]);
 		Sleep(interDelayMs);
 		i++;
+		
 	}
 }
 
-void _SendKeys(ifstream& fStream, unsigned int firstDelayMs = DEFAULT_INIT_DELAY, unsigned int interDelayMs = DEFAULT_INTER_DELAY) {
+void _SendKeys(ifstream& fStream, unsigned int firstDelayMs = DEFAULT_INIT_DELAY, unsigned int interDelayMs = DEFAULT_INTER_DELAY, unsigned int nlDelayMs = 0) {
 	Sleep(firstDelayMs);
 
 	char c;
 	while (fStream.get(c))   {  
 		//std::cout << c;
+		if(c == '\n') {
+			Sleep(nlDelayMs);
+		}
 		_SendKey(c);
 		Sleep(interDelayMs);
 	}
@@ -291,6 +298,7 @@ void PrintUsage(const char *appName) {
 	cout<<"Optional arguments:"<<endl;
 	cout<<"   -d <number>    :  Initial delay time in miliseconds before first type"<<endl;
 	cout<<"   -D <number>    :  Delay time in miliseconds in-between typing two keys"<<endl;
+	cout<<"   -l <number>    :  Delay time in miliseconds before new line"<<endl;
 	cout<<endl<<endl;
 	cout<<"Made by A.C. 2018~2019"<<endl;
 }
@@ -298,7 +306,7 @@ void PrintUsage(const char *appName) {
 int main(int argc, char **argv) {
 	
 	bool file_mode = false;
-	int d = DEFAULT_INIT_DELAY, D = DEFAULT_INTER_DELAY;
+	int d = DEFAULT_INIT_DELAY, D = DEFAULT_INTER_DELAY, nld = 0;
 	
 	if(argc>2) {
 		//Check for file or string
@@ -319,6 +327,8 @@ int main(int argc, char **argv) {
 						d = stoi(argv[i+1]);
 					} else if(!strcmp(argv[i], "-D")) {
 						D = stoi(argv[i+1]);
+					} else if(!strcmp(argv[i], "-l")) {
+						nld = stoi(argv[i+1]);
 					}
 				}
 			} else {
@@ -336,10 +346,10 @@ int main(int argc, char **argv) {
 	
 	if(file_mode) {
 		ifstream is(argv[2]);
-		_SendKeys(is, d, D);
+		_SendKeys(is, d, D, nld);
 		is.close();
 	} else {
-		_SendKeys(argv[2], d, D);
+		_SendKeys(argv[2], d, D, nld);
 	}
 
 
