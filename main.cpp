@@ -19,37 +19,6 @@
 
 using namespace std;
 
-WORD KeyToHex(char c) {
-    switch(c) {
-    case '1':
-        return 0x02;
-    case '2':
-        return 0x03;
-    case '3':
-        return 0x04;
-    case '4':
-        return 0x05;
-    case '5':
-        return 0x06;
-    case '6':
-        return 0x07;
-    case '7':
-        return 0x08;
-    case '8':
-        return 0x09;
-    case '9':
-        return 0x0A;
-    case '0':
-        return 0x0B;
-    case '-':
-        return 0x0C;
-    case '=':
-        return 0x0D;
-    case 'Q':
-        return 0x10;
-
-    }
-}
 
 WORD CharToVkey(char c) {
 	c = tolower(c); //Make it lowercase because it's case insensitive
